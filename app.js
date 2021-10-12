@@ -2,6 +2,8 @@ let qwerty = document.getElementById("qwerty");
 let pharse = document.getElementById("pharse");
 let ul = phrase.querySelector("ul");
 let missed = 0;
+let letters = [];
+let matches = [];
 let phrases = [
                 "hello stranger",  
                 "bye stranger", 
@@ -17,14 +19,44 @@ const overley = document.getElementById("overlay");
 // helper func 
 
 
+function checkletter(letter) {
+    let match = [];
+    const phrase = ul.children;
+    for (let i = 0; i < phrase.length; i++) {
+        if (phrase[i].textContent === letter.textContent) {
+            phrase[i].className = "letter show";
+            letter.className = "show";
+            match.push(letter.textContent)
+        }
+    }
+    console.log(match);
+    if (match[0]) {
+        matches.push(match[0]);
+    } else {
+
+        lifeRemove();
+    }
+
+}
+
+function lifeRemove() {
+    const lifes = document.querySelectorAll(".tries");
+    if (lifes.length) {
+        missed += 1
+        lifes[lifes.length - 1].remove();
+    } 
+    if (missed === 5) {
+        console.log("game lost");
+    }
+}
+
+
 function getRandomPhraseAsArray(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
 function addPhraseToDisplay(phrase) {
-    newUl = document.createElement("ul"); 
     for (let i = 0; i < phrase.length; i++) {
-        console.log(phrase[i]);
         let li = document.createElement("li");
         if (phrase[i] === " ") {
             li.className = "space"
@@ -36,18 +68,31 @@ function addPhraseToDisplay(phrase) {
     }
 }
 
-addPhraseToDisplay(getRandomPhraseAsArray(phrases));
+
 
 
 // manipulation
 btn_reset.addEventListener("click", (event) => {
+    
     if (event.target === event.currentTarget) {
-        console.log("asdf");
         overley.style.display = "none";
     }
 })
 
 
+
+qwerty.addEventListener("click", (event) => {
+    if (event.target.tagName === "BUTTON") {
+        event.target.className = "chosen";
+        letters.push(event.target.textContent);
+        checkletter(event.target);
+    }
+
+});
+
+// run logic 
+
+addPhraseToDisplay(getRandomPhraseAsArray(phrases));
 
 
 
