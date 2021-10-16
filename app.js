@@ -5,11 +5,11 @@ let missed = 0;
 let letters = [];
 let matches = [];
 let phrases = [
-                "hello stranger",  
-                "bye stranger", 
-                "wheel stranger",
-                "hammer stranger",
-                "car stranger"
+                "change the world by being yourself ",  
+                "every moment is a fresh beginning", 
+                "never regreat anything that made you smile",
+                "simplicity is the ultimate sophistication",
+                "whatever you do do it well"
               ];
 const btn_reset = document.getElementsByClassName("btn__reset")[0];
 const overley = document.getElementById("overlay");
@@ -29,7 +29,6 @@ function checkletter(letter) {
             match.push(letter.textContent)
         }
     }
-    console.log(match);
     if (match[0]) {
         matches.push(match[0]);
     } else {
@@ -46,10 +45,12 @@ function lifeRemove() {
         lifes[lifes.length - 1].remove();
     } 
     if (missed === 5) {
+        overley.setAttribute("class", "lose");
+        overley.style.display = "flex";
         console.log("game lost");
+        missed = 0
     }
 }
-
 
 function getRandomPhraseAsArray(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -59,9 +60,9 @@ function addPhraseToDisplay(phrase) {
     for (let i = 0; i < phrase.length; i++) {
         let li = document.createElement("li");
         if (phrase[i] === " ") {
-            li.className = "space"
+            li.className = "space";
         } else {
-            li.className = "letter"
+            li.className = "letter";
         }
         li.innerHTML = phrase[i];
         ul.appendChild(li);
