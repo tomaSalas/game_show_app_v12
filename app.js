@@ -85,7 +85,7 @@ btn_reset.addEventListener("click", (event) => {
 qwerty.addEventListener("click", (event) => {
     if (event.target.tagName === "BUTTON") {
         event.target.className = "chosen";
-        letters.push(event.target.textContent);
+        event.target.disabled = true;
         checkletter(event.target);
     }
 
