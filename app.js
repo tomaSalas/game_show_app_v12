@@ -11,13 +11,14 @@ let phrases = [
                 "simplicity is the ultimate sophistication",
                 "whatever you do do it well"
               ];
+let phrasesCountWithoutSpace = 0;
+const lifesOriginal = document.querySelectorAll(".tries");
 const btn_reset = document.getElementsByClassName("btn__reset")[0];
 const overley = document.getElementById("overlay");
 
-
+let play = 1;
 
 // helper func 
-
 
 function checkletter(letter) {
     let match = [];
@@ -29,13 +30,47 @@ function checkletter(letter) {
             match.push(letter.textContent)
         }
     }
+    checkForWin()
     if (match[0]) {
         matches.push(match[0]);
     } else {
 
         lifeRemove();
     }
+    
 
+}
+function checkForWin() {
+    phrasesCountWithoutSpace = 0;
+    const phrase = ul.children;
+    for (let i = 0; i < phrase.length; i++) {
+        if ((phrase[i].className === "letter show") || (phrase[i].className === "space")) {
+            phrasesCountWithoutSpace += 1;
+        }
+        
+    }
+    if (phrase.length === phrasesCountWithoutSpace) {
+        console.log("You won!")
+        overley.setAttribute("class", "win");
+        overley.style.display = "flex";
+        reset()
+
+    }
+}
+
+function reset() {
+    missed = 0;
+    ul.innerHTML = '';
+    resetQwertyButtons();
+    removeClassName();
+    addLifes()
+}
+function addLifes() {
+    const ol = document.getElementsByTagName("OL")[0];
+    for (let i = 0; i < lifesOriginal.length; i++) {
+        ol.appendChild(lifesOriginal[i]);
+    }
+    
 }
 
 function lifeRemove() {
@@ -48,7 +83,7 @@ function lifeRemove() {
         overley.setAttribute("class", "lose");
         overley.style.display = "flex";
         console.log("game lost");
-        missed = 0
+        reset()
     }
 }
 
@@ -69,6 +104,22 @@ function addPhraseToDisplay(phrase) {
     }
 }
 
+function resetQwertyButtons() {
+    const buttons = document.getElementsByTagName("BUTTON");
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = false;
+    }
+    
+}
+
+function removeClassName() {
+    const qwertyButtons = qwerty.getElementsByTagName("BUTTON")
+    for (let i = 0; i < qwertyButtons.length; i++) {
+        qwertyButtons[i].className = "";
+        }
+
+}
+
 
 
 
@@ -76,6 +127,7 @@ function addPhraseToDisplay(phrase) {
 btn_reset.addEventListener("click", (event) => {
     
     if (event.target === event.currentTarget) {
+        game()
         overley.style.display = "none";
     }
 })
@@ -92,8 +144,11 @@ qwerty.addEventListener("click", (event) => {
 });
 
 // run logic 
+function game() {
+    addPhraseToDisplay(getRandomPhraseAsArray(phrases));
+}
 
-addPhraseToDisplay(getRandomPhraseAsArray(phrases));
+
 
 
 
